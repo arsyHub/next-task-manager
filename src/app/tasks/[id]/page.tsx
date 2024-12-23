@@ -6,12 +6,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -22,9 +17,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Circle, ListFilter, Plus, Search } from "lucide-react";
+import { ListFilter, Search } from "lucide-react";
 import React from "react";
 import ButtonAdd from "./components/create/create";
+import Board from "./components/board";
 
 export default function TasksDetail() {
   const [search, setSearch] = React.useState<string>("");
@@ -123,45 +119,7 @@ export default function TasksDetail() {
 
       <div className="overflow-x-auto snap-x snap-mandatory">
         <div className="flex min-w-[1000px] space-x-3 ">
-          {Array.from({ length: 4 }).map((_, index) => (
-            <div
-              key={index}
-              className="flex-1 snap-center bg-white p-2 rounded-lg min-w-[290px] border border-gray-300 shadow-md"
-            >
-              <div className="flex justify-between items-center mb-3 ">
-                <div className="flex items-center gap-2">
-                  <span>
-                    <Circle color="green" size={20} />
-                  </span>
-                  <h1 className="text-lg">
-                    To-Do
-                    <span className="ml-2 text-sm text-gray-500">10</span>
-                  </h1>
-                </div>
-
-                <Button
-                  variant="secondary"
-                  className="rounded-full"
-                  size={"icon"}
-                >
-                  <Plus />
-                </Button>
-              </div>
-
-              <div className="overflow-y-auto h-[calc(100vh-150px)] grid grid-cols-1 gap-3 p-2 bg-gray-100 rounded-md pb-14">
-                {Array.from({ length: 10 }).map((_, index) => (
-                  <Card key={index} className=" rounded-lg">
-                    <CardHeader>
-                      <CardTitle className="text-md">
-                        Task {index + 1}
-                      </CardTitle>
-                      <CardDescription>Task description</CardDescription>
-                    </CardHeader>
-                  </Card>
-                ))}
-              </div>
-            </div>
-          ))}
+          <Board />
         </div>
       </div>
     </div>
