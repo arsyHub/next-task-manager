@@ -52,7 +52,7 @@ export default function TasksDetail() {
 
         <div className="hidden md:flex gap-2">
           <Select>
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className="w-[180px] bg-white">
               <SelectValue placeholder="Select project" />
             </SelectTrigger>
             <SelectContent>
@@ -78,7 +78,7 @@ export default function TasksDetail() {
       <div className="flex justify-between md:hidden mb-4">
         <div className="flex gap-2">
           <Select>
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className="w-[180px] bg-white">
               <SelectValue placeholder="Select project" />
             </SelectTrigger>
             <SelectContent>
@@ -115,9 +115,7 @@ export default function TasksDetail() {
           <AccordionContent>
             <p className="text-sm text-gray-500">
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet
-              rerum accusantium doloribus possimus. Earum, fugit sunt. Ab error
-              maxime libero dolorum voluptatibus voluptas asperiores ipsum
-              perferendis maiores. Asperiores, iste ea?
+              rerum accusantium doloribus possimus.
             </p>
           </AccordionContent>
         </AccordionItem>
@@ -150,7 +148,7 @@ export default function TasksDetail() {
                 </Button>
               </div>
 
-              <div className="overflow-y-auto h-[calc(100vh-150px)] grid grid-cols-1 gap-3 p-2 bg-gray-100 rounded-md">
+              <div className="overflow-y-auto h-[calc(100vh-150px)] grid grid-cols-1 gap-3 p-2 bg-gray-100 rounded-md pb-14">
                 {Array.from({ length: 10 }).map((_, index) => (
                   <Card key={index} className=" rounded-lg">
                     <CardHeader>

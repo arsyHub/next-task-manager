@@ -37,10 +37,7 @@ export default function CardProject({
 }: CardProjectProps) {
   const router = useRouter();
   return (
-    <Card
-      onClick={() => router.push(`/tasks/${id}`)}
-      className="w-full md:max-w-[400px]"
-    >
+    <Card className="w-full md:max-w-[400px]">
       <CardHeader>
         <div className="flex justify-between items-center mb-3">
           <Badge variant="default">
@@ -58,7 +55,12 @@ export default function CardProject({
             </PopoverContent>
           </Popover>
         </div>
-        <CardTitle className="text-xl">{title}</CardTitle>
+        <CardTitle
+          onClick={() => router.push(`/tasks/${id}`)}
+          className="text-xl cursor-pointer"
+        >
+          {title}
+        </CardTitle>
         <CardDescription className="line-clamp-2">
           {description}
         </CardDescription>

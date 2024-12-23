@@ -18,7 +18,7 @@ export default function RootLayout({
     <html lang="en">
       <body className="flex items-center flex-col bg-[#F2F3F8] overflow-x-hidden">
         <Header />
-        <div className="my-4 w-full px-4 md:px-10">{children}</div>
+        <div className="my-4 w-full px-2 md:px-10">{children}</div>
         <Toaster />
         <Navbar />
       </body>
