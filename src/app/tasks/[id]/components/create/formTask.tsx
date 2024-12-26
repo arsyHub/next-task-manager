@@ -26,12 +26,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Calendar } from "@/components/ui/calendar";
+
 import { useParams } from "next/navigation";
 import dayjs from "dayjs";
 
@@ -85,7 +80,7 @@ export function FormTask({ onClose }: FormTaskProps) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
         <FormField
           control={form.control}
           name="title"
@@ -177,31 +172,11 @@ export function FormTask({ onClose }: FormTaskProps) {
             <FormItem>
               <FormLabel>Due Date</FormLabel>
               <FormControl>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <div className="relative">
-                      <Input
-                        type="text"
-                        placeholder="Enter your Task due date"
-                        value={
-                          field.value
-                            ? new Date(field.value).toLocaleDateString()
-                            : ""
-                        }
-                        readOnly
-                      />
-                    </div>
-                  </PopoverTrigger>
-                  <PopoverContent>
-                    <Calendar
-                      mode="single"
-                      selected={field.value ? new Date(field.value) : undefined}
-                      onSelect={(date) => {
-                        field.onChange(date ? date.toISOString() : "");
-                      }}
-                    />
-                  </PopoverContent>
-                </Popover>
+                <Input
+                  type="date"
+                  value={field.value || ""}
+                  onChange={(e) => field.onChange(e.target.value)}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
