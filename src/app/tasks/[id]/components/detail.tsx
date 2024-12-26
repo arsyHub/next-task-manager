@@ -66,7 +66,7 @@ export default function DetailTask({
         <SheetContent className="md:w-1/2 w-full p-2 md:p-4">
           <SheetHeader>
             <SheetTitle>
-              <h1 className="text-xl text-start">{task.title}</h1>
+              <h1 className="text-xl text-start mt-8">{task.title}</h1>
 
               <div className="my-3">
                 <Select
@@ -121,9 +121,7 @@ export default function DetailTask({
                   </PopoverTrigger>
                   <PopoverContent className="p-2 w-[100px]">
                     {/* <div className="bg-white flex flex-col gap-2 p-3 border border-gray-200 rounded-lg"> */}
-                    <div className="text-xs flex gap-2 flex-col">
-                      {/* <EditProject id={id} fetchData={fetchData} /> */}
-                      {/* <DeleteProject id={id} fetchData={fetchData} /> */}
+                    <div className="text-sm flex gap-2 flex-col">
                       <p
                         className="cursor-pointer"
                         onClick={() => setIsEdit(true)}

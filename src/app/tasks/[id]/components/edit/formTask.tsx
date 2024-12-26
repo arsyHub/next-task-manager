@@ -102,7 +102,7 @@ export function FormTask({ onClose, task }: FormTaskProps) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3 mt-8">
         <FormField
           control={form.control}
           name="title"
