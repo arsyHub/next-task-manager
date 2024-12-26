@@ -11,6 +11,7 @@ interface Project {
   id: string;
   title: string;
   description: string;
+  tasks: Array<object>;
   createdAt: string;
 }
 
@@ -69,6 +70,7 @@ export default function Projects() {
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3 pb-14">
         {data.map((project: Project) => (
           <CardProject
+            tasks={project.tasks}
             key={project.id}
             id={project.id}
             title={project.title}

@@ -6,11 +6,20 @@ import DialogParent from "@/components/ui/dialog-parent/dialogParent";
 import { CirclePlus } from "lucide-react";
 import { FormTask } from "./formTask";
 
-interface Props {
-  fetchData: () => void;
+enum StatusEnum {
+  todo = "todo",
+  onProgress = "on progress",
+  inReview = "in review",
+  completed = "completed",
 }
 
-export default function Create({ fetchData }: Props) {
+interface Props {
+  fetchData: () => void;
+  status?: StatusEnum;
+  buttonTrigger?: React.ReactNode;
+}
+
+export default function Create({ fetchData, status, buttonTrigger }: Props) {
   const closeButtonRef = React.useRef<HTMLButtonElement>(null);
 
   const onClose = () => {
@@ -26,12 +35,13 @@ export default function Create({ fetchData }: Props) {
       Add
     </Button>
   );
+
   return (
     <DialogParent
-      buttonTrigger={addAction}
+      buttonTrigger={buttonTrigger || addAction}
       title="Add Task"
       closeButtonRef={closeButtonRef}
-      body={<FormTask onClose={onClose} />}
+      body={<FormTask onClose={onClose} defaultStatus={status} />}
     />
   );
 }

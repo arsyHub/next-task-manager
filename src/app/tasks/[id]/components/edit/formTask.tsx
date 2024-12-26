@@ -29,6 +29,7 @@ import {
 
 import { useParams } from "next/navigation";
 import dayjs from "dayjs";
+import { Textarea } from "@/components/ui/textarea";
 
 const formSchema = z.object({
   project_id: z.string(),
@@ -49,12 +50,22 @@ enum StatusEnum {
   completed = "completed",
 }
 
+type Task = {
+  id: string;
+  title: string;
+  description: string;
+  status: StatusEnum;
+  tag: string;
+  user_ids: string[];
+  due_date: string;
+};
+
 interface FormTaskProps {
   onClose: () => void;
-  defaultStatus?: StatusEnum;
+  task: Task;
 }
 
-export function FormTask({ onClose, defaultStatus }: FormTaskProps) {
+export function FormTask({ onClose, task }: FormTaskProps) {
   const [isLoading, setIsLoading] = React.useState(false);
 
   const { id: project_id } = useParams<{ id: string }>();
@@ -63,12 +74,12 @@ export function FormTask({ onClose, defaultStatus }: FormTaskProps) {
     resolver: zodResolver(formSchema),
     defaultValues: {
       project_id: project_id,
-      title: "",
-      description: "",
-      status: defaultStatus || StatusEnum.todo,
-      tag: "",
-      due_date: "",
-      user_ids: [],
+      title: task.title,
+      description: task.description,
+      status: task.status,
+      tag: task.tag,
+      due_date: task.due_date,
+      user_ids: task.user_ids,
     },
   });
 
@@ -79,11 +90,11 @@ export function FormTask({ onClose, defaultStatus }: FormTaskProps) {
       if (data.due_date === "Invalid Date") {
         data.due_date = "";
       }
-      await api.post("/tasks", data);
-      toast.success("Task created successfully");
+      await api.put(`/tasks/${task.id}`, data);
+      toast.success("Task edited successfully");
       onClose();
     } catch (error) {
-      toast.error(`Failed to create Task: ${error}`);
+      toast.error(`Failed to edit Task: ${error}`);
     } finally {
       setIsLoading(false);
     }
@@ -112,7 +123,10 @@ export function FormTask({ onClose, defaultStatus }: FormTaskProps) {
             <FormItem>
               <FormLabel>Description</FormLabel>
               <FormControl>
-                <Input placeholder="Enter your Task description" {...field} />
+                <Textarea
+                  placeholder="Enter your Task description"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -127,7 +141,7 @@ export function FormTask({ onClose, defaultStatus }: FormTaskProps) {
               <FormControl>
                 <Select value={field.value} onValueChange={field.onChange}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select a fruit" />
+                    <SelectValue placeholder="Select Status" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
@@ -182,7 +196,7 @@ export function FormTask({ onClose, defaultStatus }: FormTaskProps) {
               <FormControl>
                 <Input
                   type="date"
-                  value={field.value || ""}
+                  value={field.value}
                   onChange={(e) => field.onChange(e.target.value)}
                 />
               </FormControl>
@@ -194,6 +208,9 @@ export function FormTask({ onClose, defaultStatus }: FormTaskProps) {
         <Button disabled={isLoading} type="submit" className="w-full">
           {isLoading && <Loader2 className="animate-spin" />}
           Save
+        </Button>
+        <Button variant={"outline"} className="w-full" onClick={onClose}>
+          Cancel
         </Button>
       </form>
     </Form>

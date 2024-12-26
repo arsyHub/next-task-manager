@@ -26,6 +26,7 @@ interface CardProjectProps {
   description: string;
   fetchData?: () => void;
   date: string;
+  tasks: Array<object>;
 }
 
 export default function CardProject({
@@ -33,6 +34,7 @@ export default function CardProject({
   title,
   description,
   date,
+  tasks,
   fetchData,
 }: CardProjectProps) {
   const router = useRouter();
@@ -41,7 +43,7 @@ export default function CardProject({
       <CardHeader>
         <div className="flex justify-between items-center mb-3">
           <Badge variant="default">
-            <div className="flex items-center gap-1">1 Tasks</div>
+            <div className="flex items-center gap-1">{tasks.length} Tasks</div>
           </Badge>
           <Popover>
             <PopoverTrigger className="bg-[#F2F3F8] px-2 rounded-md">

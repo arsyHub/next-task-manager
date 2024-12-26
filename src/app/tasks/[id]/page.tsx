@@ -18,16 +18,86 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { ListFilter, Search } from "lucide-react";
-import React from "react";
+import * as React from "react";
 import ButtonAdd from "./components/create/create";
 import Board from "./components/board";
+import api from "@/lib/api";
+import { useParams } from "next/navigation";
+
+interface Project {
+  id: string;
+  title: string;
+  description: string;
+  tasks: Array<{ status: string; title: string; description: string }>;
+  createdAt: string;
+}
+
+enum StatusEnum {
+  todo = "todo",
+  onProgress = "on progress",
+  inReview = "in review",
+  completed = "completed",
+}
+
+interface Task {
+  id: string;
+  title: string;
+  description: string;
+  status: StatusEnum;
+  tag: string;
+  due_date: string;
+  user_ids: Array<string>;
+}
 
 export default function TasksDetail() {
+  const [dataProject, setDataProject] = React.useState<Project>();
+  const [dataTask, setDataTask] = React.useState<Task[]>();
   const [search, setSearch] = React.useState<string>("");
+  const { id } = useParams<{ id: string }>();
 
-  const getData = () => {
-    console.log("Fetching data");
+  const getDataTask = async () => {
+    try {
+      const resTask = await api.get(`/tasks?project_id=${id}&title=${search}`);
+      if (resTask.data) {
+        setDataTask(resTask.data.data);
+      } else {
+        console.error("Unexpected data format:", resTask.data);
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error("Failed to fetch :", error.message);
+      } else {
+        console.error("Failed to fetch :", error);
+      }
+    }
   };
+
+  const getDataProject = async () => {
+    try {
+      const resProject = await api.get(`/projects/${id}`);
+      if (resProject.data) {
+        setDataProject(resProject.data.data);
+      } else {
+        console.error("Unexpected data format:", resProject.data);
+      }
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error("Failed to fetch :", error.message);
+      } else {
+        console.error("Failed to fetch :", error);
+      }
+    }
+  };
+
+  React.useEffect(() => {
+    getDataTask();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search]);
+
+  React.useEffect(() => {
+    getDataProject();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div>
@@ -67,7 +137,7 @@ export default function TasksDetail() {
             <ListFilter />
             Filter
           </Button>
-          <ButtonAdd fetchData={getData} />
+          <ButtonAdd fetchData={getDataTask} />
         </div>
       </div>
 
@@ -95,7 +165,7 @@ export default function TasksDetail() {
           </Button>
         </div>
 
-        <ButtonAdd fetchData={getData} />
+        <ButtonAdd fetchData={getDataTask} />
       </div>
 
       <Accordion
@@ -106,20 +176,19 @@ export default function TasksDetail() {
       >
         <AccordionItem value="item-1">
           <AccordionTrigger>
-            <h1 className="text-lg sm:text-2xl font-bold">E-Book</h1>
+            <h1 className="text-lg sm:text-2xl font-bold">
+              {dataProject?.title}
+            </h1>
           </AccordionTrigger>
           <AccordionContent>
-            <p className="text-sm text-gray-500">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet
-              rerum accusantium doloribus possimus.
-            </p>
+            <p className="text-sm text-gray-500">{dataProject?.description}</p>
           </AccordionContent>
         </AccordionItem>
       </Accordion>
 
       <div className="overflow-x-auto snap-x snap-mandatory">
         <div className="flex min-w-[1000px] space-x-3 ">
-          <Board />
+          <Board tasks={dataTask || []} fetchData={getDataTask} />
         </div>
       </div>
     </div>
