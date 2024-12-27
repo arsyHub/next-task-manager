@@ -30,6 +30,7 @@ import {
 import { useParams } from "next/navigation";
 import dayjs from "dayjs";
 import { Textarea } from "@/components/ui/textarea";
+import { MultiSelect } from "../multiSelect";
 
 const formSchema = z.object({
   project_id: z.string(),
@@ -56,7 +57,7 @@ type Task = {
   description: string;
   status: StatusEnum;
   tag: string;
-  user_ids: string[];
+  users: { id: string; name: string; email: string }[] | null;
   due_date: string;
 };
 
@@ -65,10 +66,30 @@ interface FormTaskProps {
   task: Task;
 }
 
+interface Users {
+  id: string;
+  name: string;
+  email: string;
+}
+
 export function FormTask({ onClose, task }: FormTaskProps) {
   const [isLoading, setIsLoading] = React.useState(false);
+  const [users, setUsers] = React.useState<Users[]>([]);
 
   const { id: project_id } = useParams<{ id: string }>();
+
+  const getDataUser = async () => {
+    try {
+      const response = await api.get(`/users`);
+      setUsers(response.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  React.useEffect(() => {
+    getDataUser();
+  }, []);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -78,8 +99,8 @@ export function FormTask({ onClose, task }: FormTaskProps) {
       description: task.description,
       status: task.status,
       tag: task.tag,
-      due_date: task.due_date,
-      user_ids: task.user_ids,
+      due_date: dayjs(task.due_date).format("YYYY-MM-DD"),
+      user_ids: task.users?.map((user) => user.id),
     },
   });
 
@@ -181,6 +202,30 @@ export function FormTask({ onClose, task }: FormTaskProps) {
                     </SelectGroup>
                   </SelectContent>
                 </Select>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="user_ids"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Assign To</FormLabel>
+              <FormControl>
+                <MultiSelect
+                  defaultValue={field.value}
+                  options={users?.map((user) => ({
+                    id: user.id,
+                    label: user.name,
+                    email: user.email,
+                  }))}
+                  onChange={(selectedOptionIds) => {
+                    field.onChange(selectedOptionIds);
+                  }}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

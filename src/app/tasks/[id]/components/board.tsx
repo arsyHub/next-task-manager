@@ -9,6 +9,7 @@ import { Circle, Plus } from "lucide-react";
 import React from "react";
 import Create from "./create/create";
 import DetailTask from "./detail";
+import { AvatarGroup } from "./avatarGroup";
 
 interface BoardProps {
   tasks: Array<{
@@ -17,7 +18,7 @@ interface BoardProps {
     title: string;
     description: string;
     tag: string;
-    user_ids: string[];
+    users: { id: string; name: string; email: string }[] | null;
     due_date: string;
   }>;
   fetchData: () => void;
@@ -60,6 +61,12 @@ export default function Board({ tasks, fetchData }: BoardProps) {
     },
   ];
 
+  const avatarIcn: { [key: number]: string } = {
+    0: "https://ui.shadcn.com/avatars/02.png",
+    1: "https://ui.shadcn.com/avatars/01.png",
+    2: "https://ui.shadcn.com/avatars/03.png",
+  };
+
   const buttonAction = (
     <Button variant="secondary" size="icon" className="rounded-full">
       <Plus />
@@ -97,10 +104,21 @@ export default function Board({ tasks, fetchData }: BoardProps) {
             {tasks.map((item, index) =>
               item.status === boards.name ? (
                 <DetailTask key={index} taskDetail={item} fetchData={fetchData}>
-                  <Card className=" rounded-lg max-h-[100px] text-start">
-                    <CardHeader>
+                  <Card className=" rounded-lg max-h-[] text-start">
+                    <CardHeader className="p-3">
                       <CardTitle className="text-md">{item.title}</CardTitle>
-                      <CardDescription>{item.description}</CardDescription>
+                      <CardDescription className="line-clamp-1">
+                        {item.description}
+                      </CardDescription>
+
+                      <AvatarGroup
+                        avatars={
+                          item.users?.map((user, index) => ({
+                            src: index < 3 ? avatarIcn[index] : "",
+                            alt: user.name,
+                          })) || []
+                        }
+                      />
                     </CardHeader>
                   </Card>
                 </DetailTask>

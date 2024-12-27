@@ -25,6 +25,9 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { FormTask } from "./edit/formTask";
+import DeleteTask from "./delete/delete";
+import api from "@/lib/api";
+import { toast } from "sonner";
 
 enum StatusEnum {
   todo = "todo",
@@ -39,7 +42,7 @@ type Task = {
   description: string;
   status: StatusEnum;
   tag: string;
-  user_ids: string[];
+  users: { id: string; name: string; email: string }[] | null;
   due_date: string;
 };
 
@@ -59,11 +62,24 @@ export default function DetailTask({
   );
   const [isEdit, setIsEdit] = React.useState<boolean>(false);
 
+  const onUpdateStatus = async (status: string) => {
+    try {
+      setSelectedStatus(status);
+      await api.put(`/tasks/${task.id}`, {
+        status: status,
+      });
+      toast.success("Status edited successfully");
+      fetchData();
+    } catch {
+      toast.error("Something went wrong");
+    }
+  };
+
   return (
     <Sheet>
       <SheetTrigger onClick={() => setIsEdit(false)}>{children}</SheetTrigger>
       {!isEdit ? (
-        <SheetContent className="md:w-1/2 w-full p-2 md:p-4">
+        <SheetContent className="md:w-[450px] w-full p-2 md:p-4">
           <SheetHeader>
             <SheetTitle>
               <h1 className="text-xl text-start mt-8">{task.title}</h1>
@@ -71,7 +87,7 @@ export default function DetailTask({
               <div className="my-3">
                 <Select
                   value={selectedStatus}
-                  onValueChange={setSelectedStatus}
+                  onValueChange={(value) => onUpdateStatus(value)}
                 >
                   <SelectTrigger className="w-[180px] bg-[white]">
                     <SelectValue placeholder="Status" />
@@ -120,7 +136,6 @@ export default function DetailTask({
                     <Ellipsis />
                   </PopoverTrigger>
                   <PopoverContent className="p-2 w-[100px]">
-                    {/* <div className="bg-white flex flex-col gap-2 p-3 border border-gray-200 rounded-lg"> */}
                     <div className="text-sm flex gap-2 flex-col">
                       <p
                         className="cursor-pointer"
@@ -128,7 +143,7 @@ export default function DetailTask({
                       >
                         Edit
                       </p>
-                      <p className="text-[red] cursor-pointer">Delete</p>
+                      <DeleteTask id={task.id} fetchData={fetchData} />
                     </div>
                   </PopoverContent>
                 </Popover>
@@ -144,9 +159,9 @@ export default function DetailTask({
                     </tr>
 
                     <tr>
-                      <td className="text-start">Assignee </td>
+                      <td className="text-start">Assign to </td>
                       <td className="block sm:ml-16 text-start">
-                        : {task.user_ids}
+                        : {task.users?.map((user) => user.name).join(", ")}
                       </td>
                     </tr>
 
@@ -163,7 +178,7 @@ export default function DetailTask({
           </SheetHeader>
         </SheetContent>
       ) : (
-        <SheetContent className="md:w-1/2 w-full p-2 md:p-4">
+        <SheetContent className="md:w-[450px] w-full p-2 md:p-4">
           <FormTask
             onClose={() => {
               setIsEdit(false);

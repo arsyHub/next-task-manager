@@ -23,6 +23,7 @@ import ButtonAdd from "./components/create/create";
 import Board from "./components/board";
 import api from "@/lib/api";
 import { useParams } from "next/navigation";
+import { SelectProject } from "./components/selectProject";
 
 interface Project {
   id: string;
@@ -46,24 +47,49 @@ interface Task {
   status: StatusEnum;
   tag: string;
   due_date: string;
-  user_ids: Array<string>;
+  users: { id: string; name: string; email: string }[] | null;
 }
 
 export default function TasksDetail() {
   const [dataProject, setDataProject] = React.useState<Project>();
   const [dataTask, setDataTask] = React.useState<Task[]>();
+  const [dataProjectList, setDataProjectList] = React.useState<Project[]>();
   const [search, setSearch] = React.useState<string>("");
   const { id } = useParams<{ id: string }>();
 
   const getDataTask = async () => {
     try {
-      const resTask = await api.get(`/tasks?project_id=${id}&title=${search}`);
-      if (resTask.data) {
-        setDataTask(resTask.data.data);
+      const res = await api.get(`/tasks?project_id=${id}&title=${search}`);
+      if (res.data) {
+        const sortedData = res.data.data.sort(
+          (a: { createdAt: string }, b: { createdAt: string }) => {
+            const dateA = new Date(a.createdAt);
+            const dateB = new Date(b.createdAt);
+            return dateB.getTime() - dateA.getTime(); // Urutkan dari terbaru ke terlama
+          }
+        );
+        setDataTask(sortedData);
       } else {
-        console.error("Unexpected data format:", resTask.data);
+        console.error("Unexpected data format:", res.data);
       }
     } catch (error) {
+      if (error instanceof Error) {
+        console.error("Failed to fetch:", error.message);
+      } else {
+        console.error("Failed to fetch:", error);
+      }
+    }
+  };
+
+  const getDataProject = async () => {
+    try {
+      const res = await api.get(`/projects/${id}`);
+      if (res.data) {
+        setDataProject(res.data.data);
+      } else {
+        console.error("Unexpected data format:", res.data);
+      }
+    } catch (error: unknown) {
       if (error instanceof Error) {
         console.error("Failed to fetch :", error.message);
       } else {
@@ -72,13 +98,13 @@ export default function TasksDetail() {
     }
   };
 
-  const getDataProject = async () => {
+  const getDataProjectList = async () => {
     try {
-      const resProject = await api.get(`/projects/${id}`);
-      if (resProject.data) {
-        setDataProject(resProject.data.data);
+      const res = await api.get(`/projects`);
+      if (res.data) {
+        setDataProjectList(res.data.data);
       } else {
-        console.error("Unexpected data format:", resProject.data);
+        console.error("Unexpected data format:", res.data);
       }
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -96,6 +122,7 @@ export default function TasksDetail() {
 
   React.useEffect(() => {
     getDataProject();
+    getDataProjectList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -117,7 +144,7 @@ export default function TasksDetail() {
         </div>
 
         <div className="hidden md:flex gap-2">
-          <Select>
+          {/* <Select>
             <SelectTrigger className="w-[180px] bg-white">
               <SelectValue placeholder="Select project" />
             </SelectTrigger>
@@ -131,7 +158,16 @@ export default function TasksDetail() {
                 <SelectItem value="pineapple">Pineapple</SelectItem>
               </SelectGroup>
             </SelectContent>
-          </Select>
+          </Select> */}
+
+          <SelectProject
+            data={
+              dataProjectList?.map((data) => ({
+                label: data.title,
+                value: data.id,
+              })) || []
+            }
+          />
 
           <Button variant={"outline"}>
             <ListFilter />
