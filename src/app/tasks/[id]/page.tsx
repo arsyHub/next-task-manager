@@ -8,22 +8,14 @@ import {
 import { Button } from "@/components/ui/button";
 
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+
 import { ListFilter, Search } from "lucide-react";
 import * as React from "react";
 import ButtonAdd from "./components/create/create";
 import Board from "./components/board";
 import api from "@/lib/api";
 import { useParams } from "next/navigation";
-import { SelectProject } from "./components/selectProject";
+import SelectProject from "./components/selectProject";
 
 interface Project {
   id: string;
@@ -144,27 +136,12 @@ export default function TasksDetail() {
         </div>
 
         <div className="hidden md:flex gap-2">
-          {/* <Select>
-            <SelectTrigger className="w-[180px] bg-white">
-              <SelectValue placeholder="Select project" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>Projects</SelectLabel>
-                <SelectItem value="apple">Apple</SelectItem>
-                <SelectItem value="banana">Banana</SelectItem>
-                <SelectItem value="blueberry">Blueberry</SelectItem>
-                <SelectItem value="grapes">Grapes</SelectItem>
-                <SelectItem value="pineapple">Pineapple</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select> */}
-
           <SelectProject
-            data={
-              dataProjectList?.map((data) => ({
-                label: data.title,
-                value: data.id,
+            items={
+              dataProjectList?.map((item) => ({
+                value: item.id,
+                label: item.title,
+                taskCount: item.tasks.length,
               })) || []
             }
           />
@@ -179,21 +156,15 @@ export default function TasksDetail() {
 
       <div className="flex justify-between md:hidden mb-4">
         <div className="flex gap-2">
-          <Select>
-            <SelectTrigger className="w-[180px] bg-white">
-              <SelectValue placeholder="Select project" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>Projects</SelectLabel>
-                <SelectItem value="apple">Apple</SelectItem>
-                <SelectItem value="banana">Banana</SelectItem>
-                <SelectItem value="blueberry">Blueberry</SelectItem>
-                <SelectItem value="grapes">Grapes</SelectItem>
-                <SelectItem value="pineapple">Pineapple</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+          <SelectProject
+            items={
+              dataProjectList?.map((item) => ({
+                value: item.id,
+                label: item.title,
+                taskCount: item.tasks.length,
+              })) || []
+            }
+          />
 
           <Button variant={"outline"}>
             <ListFilter />
@@ -223,7 +194,7 @@ export default function TasksDetail() {
       </Accordion>
 
       <div className="overflow-x-auto snap-x snap-mandatory">
-        <div className="flex min-w-[1000px] space-x-3 ">
+        <div className="flex min-w-[1000px] space-x-2 md:space-x-3">
           <Board tasks={dataTask || []} fetchData={getDataTask} />
         </div>
       </div>
