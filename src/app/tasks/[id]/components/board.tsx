@@ -10,6 +10,9 @@ import React from "react";
 import Create from "./create/create";
 import DetailTask from "./detail";
 import { AvatarGroup } from "./avatarGroup";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+dayjs.extend(relativeTime);
 
 interface BoardProps {
   tasks: Array<{
@@ -114,7 +117,7 @@ export default function Board({ tasks, fetchData }: BoardProps) {
                 <DetailTask key={index} taskDetail={item} fetchData={fetchData}>
                   <Card className=" rounded-lg max-h-[] text-start">
                     <CardHeader className="p-3">
-                      <CardTitle className="text-md flex gap-1 items-center">
+                      <CardTitle className="text-md flex gap-1 items-center ">
                         <span>
                           <Squircle
                             className={`${`${
@@ -123,20 +126,26 @@ export default function Board({ tasks, fetchData }: BoardProps) {
                             size={12}
                           />
                         </span>
-                        <p>{item.title}</p>
+                        <p className="line-clamp-1">{item.title}</p>
                       </CardTitle>
                       <CardDescription className="line-clamp-1">
                         {item.description}
                       </CardDescription>
 
-                      <AvatarGroup
-                        avatars={
-                          item.users?.map((user, index) => ({
-                            src: index < 3 ? avatarIcn[index] : "",
-                            alt: user.name,
-                          })) || []
-                        }
-                      />
+                      <div className="flex justify-between">
+                        <AvatarGroup
+                          avatars={
+                            item.users?.map((user, index) => ({
+                              src: index < 3 ? avatarIcn[index] : "",
+                              alt: user.name,
+                            })) || []
+                          }
+                        />
+
+                        <div className="text-xs text-gray-500 mt-2">
+                          {item.due_date && dayjs(item.due_date).fromNow()}
+                        </div>
+                      </div>
                     </CardHeader>
                   </Card>
                 </DetailTask>
