@@ -65,7 +65,7 @@ export default function Users() {
       </div>
 
       {/* Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3 pb-14">
         {data.map((user: User) => (
           <CardUser
             key={user.id}

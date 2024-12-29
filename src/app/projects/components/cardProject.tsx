@@ -10,7 +10,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@radix-ui/react-popover";
-import { Clock, Ellipsis, Heart } from "lucide-react";
+import { Bookmark, Clock, Ellipsis } from "lucide-react";
 import DeleteProject from "./delete/delete";
 import EditProject from "./edit/edit";
 import dayjs from "dayjs";
@@ -101,7 +101,10 @@ export default function CardProject({
             <Clock size={13} /> {dayjs(date).fromNow()}
           </div>
           <span onClick={() => toggleSave(id)} className="cursor-pointer">
-            <Heart size={15} className={isSaved ? "text-red-500" : ""} />
+            <Bookmark
+              size={18}
+              className={isSaved ? "text-black fill-current" : ""}
+            />
           </span>
         </div>
       </CardHeader>

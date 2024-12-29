@@ -30,7 +30,7 @@ export default function CardUser({
 }: CardUserProps) {
   return (
     <Card className="w-full md:max-w-[400px]">
-      <CardHeader>
+      <CardHeader className="p-3">
         <div className="flex justify-end items-center">
           <Popover>
             <PopoverTrigger className="bg-[#F2F3F8] px-2 rounded-md">
