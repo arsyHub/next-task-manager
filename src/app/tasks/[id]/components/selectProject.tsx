@@ -43,7 +43,7 @@ export default function SelectProject({ items = [] }: Props) {
               placeholder="Search project..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              onMouseDown={(e) => e.stopPropagation()} // Tambahkan ini
+              onMouseDown={(e) => e.stopPropagation()}
               className="pl-10" // Tambahkan padding kiri untuk memberi ruang pada ikon
             />
           </div>
