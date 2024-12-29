@@ -1,7 +1,7 @@
 "use client";
 
 import { NavItem } from "./navItem";
-import { House, Inbox, Layers2, Users } from "lucide-react";
+import { Bookmark, House, Inbox, Users } from "lucide-react";
 import * as React from "react";
 import Cookies from "js-cookie";
 
@@ -36,11 +36,11 @@ export default function Navbar() {
           onClick={() => onNavItemClick("projects")}
         />
         <NavItem
-          // label="Tasks"
-          href="/tasks"
-          icon={<Layers2 />}
-          active={activeItem === "tasks"}
-          onClick={() => onNavItemClick("tasks")}
+          // label="Bookmarks"
+          href="/bookmarks"
+          icon={<Bookmark />}
+          active={activeItem === "bookmarks"}
+          onClick={() => onNavItemClick("bookmarks")}
         />
         <NavItem
           // label="Users"

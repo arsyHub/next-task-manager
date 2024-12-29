@@ -97,12 +97,12 @@ export default function CardProject({
           {description}
         </CardDescription>
         <div className="flex items-center justify-between gap-1 text-[11px] text-muted-foreground pt-2">
-          <span onClick={() => toggleSave(id)} className="cursor-pointer">
-            <Heart size={15} className={isSaved ? "text-red-500" : ""} />
-          </span>
           <div className="flex items-center gap-1">
             <Clock size={13} /> {dayjs(date).fromNow()}
           </div>
+          <span onClick={() => toggleSave(id)} className="cursor-pointer">
+            <Heart size={15} className={isSaved ? "text-red-500" : ""} />
+          </span>
         </div>
       </CardHeader>
     </Card>
