@@ -9,13 +9,15 @@ import { Button } from "@/components/ui/button";
 
 import { Input } from "@/components/ui/input";
 
-import { ListFilter, Search } from "lucide-react";
+import { Layers, ListFilter, Search } from "lucide-react";
 import * as React from "react";
 import ButtonAdd from "./components/create/create";
 import Board from "./components/board";
 import api from "@/lib/api";
 import { useParams } from "next/navigation";
 import SelectProject from "./components/selectProject";
+import { AvatarGroup } from "./components/avatarGroup";
+import { MultiSelect } from "./components/multiSelect";
 
 interface Project {
   id: string;
@@ -42,16 +44,26 @@ interface Task {
   users: { id: string; name: string; email: string }[] | null;
 }
 
+interface User {
+  id: string;
+  name: string;
+  email: string;
+}
+
 export default function TasksDetail() {
   const [dataProject, setDataProject] = React.useState<Project>();
   const [dataTask, setDataTask] = React.useState<Task[]>();
+  const [dataUser, setDataUser] = React.useState<User[]>();
   const [dataProjectList, setDataProjectList] = React.useState<Project[]>();
   const [search, setSearch] = React.useState<string>("");
   const { id } = useParams<{ id: string }>();
+  const [selectUserId, setSelectUserId] = React.useState<string[]>([]);
 
   const getDataTask = async () => {
     try {
-      const res = await api.get(`/tasks?project_id=${id}&title=${search}`);
+      const res = await api.get(
+        `/tasks?project_id=${id}&title=${search}&user_id=${selectUserId}`
+      );
       if (res.data) {
         const sortedData = res.data.data.sort(
           (a: { createdAt: string }, b: { createdAt: string }) => {
@@ -107,16 +119,40 @@ export default function TasksDetail() {
     }
   };
 
+  const getDataUser = async () => {
+    try {
+      const res = await api.get(`/users`);
+      if (res.data) {
+        setDataUser(res.data.data);
+      } else {
+        console.error("Unexpected data format:", res.data);
+      }
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error("Failed to fetch :", error.message);
+      } else {
+        console.error("Failed to fetch :", error);
+      }
+    }
+  };
+
   React.useEffect(() => {
     getDataTask();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [search]);
+  }, [search, selectUserId]);
 
   React.useEffect(() => {
     getDataProject();
     getDataProjectList();
+    getDataUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const avatarIcn: { [key: number]: string } = {
+    0: "/images/avatar-02.png",
+    1: "/images/avatar-04.png",
+    2: "/images/avatar-05.png",
+  };
 
   return (
     <div>
@@ -134,6 +170,30 @@ export default function TasksDetail() {
             className="bg-white pl-10 w-full md:w-[300px]"
           />
         </div>
+
+        <MultiSelect
+          trigger={
+            <div className="cursor-pointer">
+              <AvatarGroup
+                avatars={
+                  dataUser?.map((user, index) => ({
+                    src: index < 3 ? avatarIcn[index] : "",
+                    alt: user.name,
+                  })) || []
+                }
+              />
+            </div>
+          }
+          options={
+            dataUser?.map((item) => ({
+              id: item.id,
+              label: item.name,
+              email: item.email,
+            })) || []
+          }
+          defaultValue={[]}
+          onChange={(id) => setSelectUserId(id)}
+        />
 
         <div className="hidden md:flex gap-2">
           <SelectProject
@@ -183,7 +243,10 @@ export default function TasksDetail() {
       >
         <AccordionItem value="item-1">
           <AccordionTrigger>
-            <h1 className="text-lg sm:text-2xl font-bold">
+            <h1 className="text-lg sm:text-2xl font-bold flex gap-2 items-center">
+              <span>
+                <Layers size={24} className="text-black" />
+              </span>
               {dataProject?.title}
             </h1>
           </AccordionTrigger>

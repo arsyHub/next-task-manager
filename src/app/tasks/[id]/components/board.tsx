@@ -5,7 +5,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Circle, Plus } from "lucide-react";
+import { Circle, Plus, Squircle } from "lucide-react";
 import React from "react";
 import Create from "./create/create";
 import DetailTask from "./detail";
@@ -62,9 +62,9 @@ export default function Board({ tasks, fetchData }: BoardProps) {
   ];
 
   const avatarIcn: { [key: number]: string } = {
-    0: "https://ui.shadcn.com/avatars/02.png",
-    1: "https://ui.shadcn.com/avatars/01.png",
-    2: "https://ui.shadcn.com/avatars/03.png",
+    0: "/images/avatar-02.png",
+    1: "/images/avatar-04.png",
+    2: "/images/avatar-05.png",
   };
 
   const buttonAction = (
@@ -72,6 +72,14 @@ export default function Board({ tasks, fetchData }: BoardProps) {
       <Plus />
     </Button>
   );
+
+  const tagColor: { [key: string]: string } = {
+    Priority: "text-blue-600",
+    Bug: "text-red-600",
+    Task: "text-green-400",
+    Reject: "text-yellow-500",
+    Refactor: "text-orange-500",
+  };
 
   return (
     <>
@@ -106,7 +114,17 @@ export default function Board({ tasks, fetchData }: BoardProps) {
                 <DetailTask key={index} taskDetail={item} fetchData={fetchData}>
                   <Card className=" rounded-lg max-h-[] text-start">
                     <CardHeader className="p-3">
-                      <CardTitle className="text-md">{item.title}</CardTitle>
+                      <CardTitle className="text-md flex gap-1 items-center">
+                        <span>
+                          <Squircle
+                            className={`${`${
+                              item.tag ? tagColor[item.tag] : "text-gray-300"
+                            }`} ${"fill-current"}`}
+                            size={12}
+                          />
+                        </span>
+                        <p>{item.title}</p>
+                      </CardTitle>
                       <CardDescription className="line-clamp-1">
                         {item.description}
                       </CardDescription>

@@ -18,7 +18,14 @@ import {
 } from "@/components/ui/select";
 import dayjs from "dayjs";
 import { Badge } from "@/components/ui/badge";
-import { Circle, Ellipsis } from "lucide-react";
+import {
+  CalendarClock,
+  Circle,
+  Ellipsis,
+  Squircle,
+  Tag,
+  UserRoundCheck,
+} from "lucide-react";
 import {
   Popover,
   PopoverContent,
@@ -75,6 +82,14 @@ export default function DetailTask({
     }
   };
 
+  const tagColor: { [key: string]: string } = {
+    Priority: "text-blue-600",
+    Bug: "text-red-600",
+    Task: "text-green-400",
+    Reject: "text-yellow-500",
+    Refactor: "text-orange-500",
+  };
+
   return (
     <Sheet>
       <SheetTrigger onClick={() => setIsEdit(false)}>{children}</SheetTrigger>
@@ -82,7 +97,17 @@ export default function DetailTask({
         <SheetContent className="md:w-[450px] w-full p-2 md:p-4">
           <SheetHeader>
             <SheetTitle>
-              <h1 className="text-xl text-start mt-8">{task.title}</h1>
+              <h1 className="text-xl text-start mt-8 flex items-center gap-2">
+                <span>
+                  <Squircle
+                    size={20}
+                    className={`${
+                      task.tag ? tagColor[task.tag] : "text-gray-300"
+                    } fill-current`}
+                  />
+                </span>
+                {task.title}
+              </h1>
 
               <div className="my-3">
                 <Select
@@ -126,11 +151,11 @@ export default function DetailTask({
             </SheetTitle>
             <SheetDescription>
               <div className="text-start">
-                <h1 className="text-black">Description</h1>
+                <h1 className="text-black font-bold">Description</h1>
                 <p>{task.description}</p>
               </div>
 
-              <div className="flex justify-end items-center">
+              <div className="flex justify-end items-center mt-2">
                 <Popover>
                   <PopoverTrigger className="bg-[#F2F3F8] px-2 rounded-md">
                     <Ellipsis />
@@ -152,22 +177,37 @@ export default function DetailTask({
                 <table className="border-spacing-y-3 border-separate w-full">
                   <tbody>
                     <tr>
-                      <td className="text-start">Due date </td>
-                      <td className="block sm:ml-16 text-start">
+                      <td className="text-start text-black">
+                        <span>
+                          <CalendarClock size={15} />
+                        </span>
+                        Due date
+                      </td>
+                      <td className="block sm:ml-12 text-start mt-2">
                         : {dayjs(task.due_date).format("DD/MM/YYYY")}
                       </td>
                     </tr>
 
                     <tr>
-                      <td className="text-start">Assign to </td>
-                      <td className="block sm:ml-16 text-start">
+                      <td className="text-start text-black">
+                        <span>
+                          <UserRoundCheck size={15} />
+                        </span>
+                        Assign to{" "}
+                      </td>
+                      <td className="block sm:ml-12 text-start mt-2">
                         : {task.users?.map((user) => user.name).join(", ")}
                       </td>
                     </tr>
 
                     <tr>
-                      <td className="text-start">Tag </td>
-                      <td className="block sm:ml-16 text-start">
+                      <td className="text-start text-black">
+                        <span>
+                          <Tag size={15} />
+                        </span>
+                        Tag{" "}
+                      </td>
+                      <td className="block sm:ml-12 text-start mt-2">
                         : {task.tag ? <Badge>{task.tag}</Badge> : ""}
                       </td>
                     </tr>

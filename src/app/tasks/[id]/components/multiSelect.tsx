@@ -18,13 +18,15 @@ type Option = {
 interface MultiSelectProps {
   options: Option[];
   defaultValue?: string[];
-  onChange?: (selectedValues: string[]) => void; // Add onChange prop
+  onChange?: (selectedValues: string[]) => void;
+  trigger?: React.ReactNode;
 }
 
 export const MultiSelect = ({
   defaultValue = [],
   options,
   onChange,
+  trigger,
 }: MultiSelectProps) => {
   const [selectedOptionIds, setSelectedOptionIds] =
     useState<string[]>(defaultValue);
@@ -63,9 +65,16 @@ export const MultiSelect = ({
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="outline" className="w-full justify-between">
-          {selectedLabels.length > 0 ? selectedLabels : "Select Users"}
-        </Button>
+        {trigger ? (
+          trigger
+        ) : (
+          <Button
+            variant="outline"
+            className="w-full justify-start text-left font-normal"
+          >
+            {selectedLabels}
+          </Button>
+        )}
       </PopoverTrigger>
       <PopoverContent className="min-w-full p-2">
         <div className="flex flex-col gap-2">
@@ -90,6 +99,7 @@ export const MultiSelect = ({
                   onCheckedChange={() => toggleOption(option.id)}
                 />
                 {option.label}
+                <span className="text-xs text-gray-500">({option.email})</span>
               </label>
             ))
           ) : (

@@ -54,7 +54,7 @@ export default function Header() {
             <Bell />
           </span>
           <Avatar>
-            <AvatarImage src="https://ui.shadcn.com/avatars/02.png" />
+            <AvatarImage src="/images/avatar-02.png" />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
         </div>
