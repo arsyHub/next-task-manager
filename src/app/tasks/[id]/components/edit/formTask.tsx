@@ -145,6 +145,7 @@ export function FormTask({ onClose, task }: FormTaskProps) {
               <FormLabel>Description</FormLabel>
               <FormControl>
                 <Textarea
+                  rows={3}
                   placeholder="Enter your Task description"
                   {...field}
                 />

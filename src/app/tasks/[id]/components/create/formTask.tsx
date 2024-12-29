@@ -29,6 +29,7 @@ import {
 
 import { useParams } from "next/navigation";
 import dayjs from "dayjs";
+import { Textarea } from "@/components/ui/textarea";
 
 const formSchema = z.object({
   project_id: z.string(),
@@ -112,7 +113,11 @@ export function FormTask({ onClose, defaultStatus }: FormTaskProps) {
             <FormItem>
               <FormLabel>Description</FormLabel>
               <FormControl>
-                <Input placeholder="Enter your Task description" {...field} />
+                <Textarea
+                  rows={3}
+                  placeholder="Enter your Task description"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
