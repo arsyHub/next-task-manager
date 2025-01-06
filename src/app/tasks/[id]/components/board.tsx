@@ -143,7 +143,8 @@ export default function Board({ tasks, fetchData }: BoardProps) {
                         />
 
                         <div className="text-xs text-gray-500 mt-2">
-                          {item.due_date && dayjs(item.due_date).fromNow()}
+                          {item.due_date &&
+                            dayjs(item.due_date).format("DD MMM YYYY")}
                         </div>
                       </div>
                     </CardHeader>
