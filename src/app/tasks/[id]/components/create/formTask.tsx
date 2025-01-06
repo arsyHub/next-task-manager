@@ -80,6 +80,9 @@ export function FormTask({ onClose, defaultStatus }: FormTaskProps) {
       if (data.due_date === "Invalid Date") {
         data.due_date = "";
       }
+      if (!data.due_date) {
+        delete data.due_date;
+      }
       await api.post("/tasks", data);
       toast.success("Task created successfully");
       onClose();

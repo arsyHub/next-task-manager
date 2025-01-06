@@ -184,7 +184,9 @@ export default function DetailTask({
                         Due date
                       </td>
                       <td className="block sm:ml-12 text-start mt-2">
-                        : {dayjs(task.due_date).format("DD/MM/YYYY")}
+                        :{" "}
+                        {task.due_date &&
+                          dayjs(task.due_date).format("DD/MM/YYYY")}
                       </td>
                     </tr>
 
