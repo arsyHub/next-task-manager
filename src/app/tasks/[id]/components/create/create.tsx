@@ -5,13 +5,7 @@ import { Button } from "@/components/ui/button";
 import DialogParent from "@/components/ui/dialog-parent/dialogParent";
 import { CirclePlus } from "lucide-react";
 import { FormTask } from "./formTask";
-
-enum StatusEnum {
-  todo = "todo",
-  onProgress = "on progress",
-  inReview = "in review",
-  completed = "completed",
-}
+import { StatusEnum } from "@/app/tasks/types/types";
 
 interface Props {
   fetchData: () => void;

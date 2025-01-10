@@ -31,6 +31,7 @@ import { useParams } from "next/navigation";
 import dayjs from "dayjs";
 import { Textarea } from "@/components/ui/textarea";
 import { MultiSelect } from "../multiSelect";
+import { Task, User } from "@/app/tasks/types/types";
 
 const formSchema = z.object({
   project_id: z.string(),
@@ -44,37 +45,14 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
-enum StatusEnum {
-  todo = "todo",
-  onProgress = "on progress",
-  inReview = "in review",
-  completed = "completed",
-}
-
-type Task = {
-  id: string;
-  title: string;
-  description: string;
-  status: StatusEnum;
-  tag: string;
-  users: { id: string; name: string; email: string }[] | null;
-  due_date: string;
-};
-
-interface FormTaskProps {
+interface Props {
   onClose: () => void;
   task: Task;
 }
 
-interface Users {
-  id: string;
-  name: string;
-  email: string;
-}
-
-export function FormTask({ onClose, task }: FormTaskProps) {
+export function FormTask({ onClose, task }: Props) {
   const [isLoading, setIsLoading] = React.useState(false);
-  const [users, setUsers] = React.useState<Users[]>([]);
+  const [users, setUsers] = React.useState<User[]>([]);
 
   const { id: project_id } = useParams<{ id: string }>();
 

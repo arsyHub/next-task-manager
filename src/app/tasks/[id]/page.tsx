@@ -6,9 +6,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-
 import { Input } from "@/components/ui/input";
-
 import { Layers, ListFilter, Search } from "lucide-react";
 import * as React from "react";
 import ButtonAdd from "./components/create/create";
@@ -18,40 +16,11 @@ import { useParams } from "next/navigation";
 import SelectProject from "./components/selectProject";
 import { AvatarGroup } from "./components/avatarGroup";
 import { MultiSelect } from "./components/multiSelect";
-
-interface Project {
-  id: string;
-  title: string;
-  description: string;
-  tasks: Array<{ status: string; title: string; description: string }>;
-  createdAt: string;
-}
-
-enum StatusEnum {
-  todo = "todo",
-  onProgress = "on progress",
-  inReview = "in review",
-  completed = "completed",
-}
-
-interface Task {
-  id: string;
-  title: string;
-  description: string;
-  status: StatusEnum;
-  tag: string;
-  due_date: string;
-  users: { id: string; name: string; email: string }[] | null;
-}
-
-interface User {
-  id: string;
-  name: string;
-  email: string;
-}
+import { Task, User } from "../types/types";
+import { Project } from "@/app/projects/types/types";
 
 export default function TasksDetail() {
-  const [dataProject, setDataProject] = React.useState<Project>();
+  const [dataProject, setDataProject] = React.useState<Project<Task>>();
   const [dataTask, setDataTask] = React.useState<Task[]>();
   const [dataUser, setDataUser] = React.useState<User[]>();
   const [dataProjectList, setDataProjectList] = React.useState<Project[]>();

@@ -1,11 +1,11 @@
 import React from "react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
-interface AvatarGroupProps {
+interface Props {
   avatars: { src?: string; alt?: string }[];
 }
 
-export function AvatarGroup({ avatars }: AvatarGroupProps) {
+export function AvatarGroup({ avatars }: Props) {
   const maxAvatars = 3;
   const displayedAvatars = avatars.slice(0, maxAvatars); // Avatar yang akan dirender
   const extraCount = avatars.length - maxAvatars; // Sisa avatar yang tidak dirender

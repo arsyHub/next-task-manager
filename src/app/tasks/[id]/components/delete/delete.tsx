@@ -12,12 +12,12 @@ import {
 import api from "@/lib/api";
 import { toast } from "sonner";
 
-interface DeleteTaskProps {
+interface Props {
   id: string;
   fetchData: () => void;
 }
 
-export default function DeleteTask({ id, fetchData }: DeleteTaskProps) {
+export default function DeleteTask({ id, fetchData }: Props) {
   const onDelete = async () => {
     try {
       await api.delete(`/tasks/${id}`);

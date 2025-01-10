@@ -6,14 +6,7 @@ import React from "react";
 import ButtonAdd from "./components/create/create";
 import CardProject from "./components/cardProject";
 import api from "@/lib/api";
-
-interface Project {
-  id: string;
-  title: string;
-  description: string;
-  tasks: Array<object>;
-  createdAt: string;
-}
+import { Project } from "./types/types";
 
 export default function Projects() {
   const [data, setData] = React.useState<Project[]>([]);
@@ -67,7 +60,7 @@ export default function Projects() {
       </div>
 
       {/* Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3 pb-14">
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3 pb-16">
         {data.map((project: Project) => (
           <CardProject
             tasks={project.tasks}

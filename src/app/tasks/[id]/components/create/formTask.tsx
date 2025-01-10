@@ -30,6 +30,7 @@ import {
 import { useParams } from "next/navigation";
 import dayjs from "dayjs";
 import { Textarea } from "@/components/ui/textarea";
+import { StatusEnum } from "@/app/tasks/types/types";
 
 const formSchema = z.object({
   project_id: z.string(),
@@ -43,19 +44,12 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
-enum StatusEnum {
-  todo = "todo",
-  onProgress = "on progress",
-  inReview = "in review",
-  completed = "completed",
-}
-
-interface FormTaskProps {
+interface Props {
   onClose: () => void;
   defaultStatus?: StatusEnum;
 }
 
-export function FormTask({ onClose, defaultStatus }: FormTaskProps) {
+export function FormTask({ onClose, defaultStatus }: Props) {
   const [isLoading, setIsLoading] = React.useState(false);
 
   const { id: project_id } = useParams<{ id: string }>();

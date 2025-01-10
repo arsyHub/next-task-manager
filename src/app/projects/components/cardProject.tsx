@@ -21,7 +21,7 @@ import Cookies from "js-cookie";
 
 dayjs.extend(relativeTime);
 
-interface CardProjectProps {
+interface Props {
   id: string;
   title: string;
   description: string;
@@ -37,7 +37,7 @@ export default function CardProject({
   date,
   tasks,
   fetchData,
-}: CardProjectProps) {
+}: Props) {
   const router = useRouter();
 
   const [savedProjects, setSavedProjects] = useState<string[]>([]);

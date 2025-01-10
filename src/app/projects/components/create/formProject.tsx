@@ -25,11 +25,11 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
-interface FormProjectProps {
+interface Props {
   onClose: () => void;
 }
 
-export function FormProject({ onClose }: FormProjectProps) {
+export function FormProject({ onClose }: Props) {
   const [isLoading, setIsLoading] = React.useState(false);
 
   const form = useForm<FormValues>({

@@ -35,25 +35,9 @@ import { FormTask } from "./edit/formTask";
 import DeleteTask from "./delete/delete";
 import api from "@/lib/api";
 import { toast } from "sonner";
+import { Task } from "../../types/types";
 
-enum StatusEnum {
-  todo = "todo",
-  onProgress = "on progress",
-  inReview = "in review",
-  completed = "completed",
-}
-
-type Task = {
-  id: string;
-  title: string;
-  description: string;
-  status: StatusEnum;
-  tag: string;
-  users: { id: string; name: string; email: string }[] | null;
-  due_date: string;
-};
-
-interface DetailTaskProps {
+interface Props {
   children: React.ReactNode;
   taskDetail: Task;
   fetchData: () => void;
@@ -63,7 +47,7 @@ export default function DetailTask({
   children,
   taskDetail: task,
   fetchData,
-}: DetailTaskProps) {
+}: Props) {
   const [selectedStatus, setSelectedStatus] = React.useState<string>(
     task.status
   );

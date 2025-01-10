@@ -14,20 +14,13 @@ import { Ellipsis } from "lucide-react";
 import React from "react";
 import DeleteUser from "./delete/delete";
 import EditUser from "./edit/edit";
+import { User } from "@/app/tasks/types/types";
 
-interface CardUserProps {
-  id: string;
-  name: string;
-  email: string;
+interface Props extends User {
   fetchData?: () => void;
 }
 
-export default function CardUser({
-  id,
-  name,
-  email,
-  fetchData,
-}: CardUserProps) {
+export default function CardUser({ id, name, email, fetchData }: Props) {
   return (
     <Card className="w-full md:max-w-[400px]">
       <CardHeader className="p-3">

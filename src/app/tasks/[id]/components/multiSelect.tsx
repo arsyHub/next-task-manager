@@ -15,7 +15,7 @@ type Option = {
   email?: string;
 };
 
-interface MultiSelectProps {
+interface Props {
   options: Option[];
   defaultValue?: string[];
   onChange?: (selectedValues: string[]) => void;
@@ -27,7 +27,7 @@ export const MultiSelect = ({
   options,
   onChange,
   trigger,
-}: MultiSelectProps) => {
+}: Props) => {
   const [selectedOptionIds, setSelectedOptionIds] =
     useState<string[]>(defaultValue);
   const [searchQuery, setSearchQuery] = useState<string>("");

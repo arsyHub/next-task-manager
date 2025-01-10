@@ -12,26 +12,12 @@ import DetailTask from "./detail";
 import { AvatarGroup } from "./avatarGroup";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import { StatusEnum, Task } from "../../types/types";
 dayjs.extend(relativeTime);
 
-interface BoardProps {
-  tasks: Array<{
-    id: string;
-    status: StatusEnum;
-    title: string;
-    description: string;
-    tag: string;
-    users: { id: string; name: string; email: string }[] | null;
-    due_date: string;
-  }>;
+interface Props {
+  tasks: Array<Task>;
   fetchData: () => void;
-}
-
-enum StatusEnum {
-  todo = "todo",
-  onProgress = "on progress",
-  inReview = "in review",
-  completed = "completed",
 }
 
 interface Iboard {
@@ -40,7 +26,7 @@ interface Iboard {
   color: string;
 }
 
-export default function Board({ tasks, fetchData }: BoardProps) {
+export default function Board({ tasks, fetchData }: Props) {
   const board: Iboard[] = [
     {
       name: StatusEnum.todo,

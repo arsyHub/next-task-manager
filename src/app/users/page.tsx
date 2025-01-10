@@ -6,12 +6,7 @@ import React from "react";
 import ButtonAdd from "./components/create/create";
 import api from "@/lib/api";
 import CardUser from "./components/cardUser";
-
-interface User {
-  id: string;
-  name: string;
-  email: string;
-}
+import { User } from "../tasks/types/types";
 
 export default function Users() {
   const [data, setData] = React.useState<User[]>([]);
@@ -65,7 +60,7 @@ export default function Users() {
       </div>
 
       {/* Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3 pb-14">
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3 pb-16">
         {data.map((user: User) => (
           <CardUser
             key={user.id}

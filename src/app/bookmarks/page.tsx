@@ -5,14 +5,7 @@ import { Search } from "lucide-react";
 import React from "react";
 import CardProject from "./components/cardProject";
 import api from "@/lib/api";
-
-interface Project {
-  id: string;
-  title: string;
-  description: string;
-  tasks: Array<object>;
-  createdAt: string;
-}
+import { Project } from "../projects/types/types";
 
 export default function Bookmarks() {
   const [data, setData] = React.useState<Project[]>([]);
@@ -59,7 +52,7 @@ export default function Bookmarks() {
       </div>
 
       {/* Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3 pb-14">
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3 pb-16">
         {data.map((project: Project) => (
           <CardProject
             tasks={project.tasks}
