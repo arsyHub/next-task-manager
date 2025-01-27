@@ -19,4 +19,5 @@ export interface Task {
   tag: string;
   due_date: string;
   users: User[] | null;
+  order: number | null;
 }
